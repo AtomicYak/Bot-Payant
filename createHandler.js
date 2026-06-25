@@ -41,10 +41,11 @@ module.exports.handleCreate = async (interaction) => {
     descCollector.on('collect', async (descMsg) => {
       const description = descMsg.content;
 
-      /* SALON */
+      /* SALON PRIVÉ */
       const channel = await interaction.guild.channels.create({
         name: `bot-${interaction.user.username}`,
         parent: config.categoryId,
+
         permissionOverwrites: [
           {
             id: interaction.guild.id,
@@ -53,42 +54,10 @@ module.exports.handleCreate = async (interaction) => {
           {
             id: interaction.user.id,
             allow: ["ViewChannel", "SendMessages", "ReadMessageHistory"]
+          },
+          {
+            id: config.staffRoleId,
+            allow: ["ViewChannel", "SendMessages", "ReadMessageHistory"]
           }
         ]
       });
-
-      /* EMBED */
-      const embed = new EmbedBuilder()
-        .setTitle("📌 Nouveau projet de bot")
-        .setColor(0x2b2d31)
-        .addFields(
-          { name: "👤 User", value: `<@${interaction.user.id}>` },
-          { name: "🏷️ Titre", value: title },
-          { name: "🧠 Description", value: description }
-        );
-
-      /* BOUTON */
-      const row = new ActionRowBuilder().addComponents(
-        new ButtonBuilder()
-          .setCustomId("close_ticket")
-          .setLabel("❌ Fermer")
-          .setStyle(ButtonStyle.Danger)
-      );
-
-      /* SEND */
-      await channel.send({
-        content: `<@&${config.staffRoleId}>`,
-        embeds: [embed],
-        components: [row],
-        allowedMentions: {
-          roles: [config.staffRoleId]
-        }
-      });
-
-      await interaction.followUp({
-        content: `✅ Salon créé : ${channel}`,
-        ephemeral: true
-      });
-    });
-  });
-};
