@@ -1,0 +1,7 @@
+{
+  "token": "TON_TOKEN",
+  "clientId": "TON_CLIENT_ID",
+  "guildId": "TON_GUILD_ID",
+  "staffRoleId": "ID_ROLE_A_PING",
+  "categoryId": "ID_CATEGORY"
+}
